@@ -29,11 +29,11 @@
                             <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Please Enter Confirm Password">
                             <p></p>
                         </div> 
-                        <button class="btn btn-primary mt-2">Register</button>
+                        <button class="btn btn-primary mt-2" type="submit">Register</button>
                     </form>                    
                 </div>
                 <div class="mt-4 text-center">
-                    <p>Have an account? <a  href="login.html">Login</a></p>
+                    <p>Have an account? <a  href="{{ route('account.login') }}">Login</a></p>
                 </div>
             </div>
         </div>
