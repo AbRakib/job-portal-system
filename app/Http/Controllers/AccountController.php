@@ -65,7 +65,9 @@ class AccountController extends Controller {
 
     //profile section
     public function profile() {
-        return view('front.account.profile');
+        $id = Auth::user()->id;
+        $user = User::where('id', $id)->first();
+        return view('front.account.profile', compact('user'));
     }
 
     // logout

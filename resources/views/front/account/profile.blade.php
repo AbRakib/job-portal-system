@@ -14,7 +14,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-3">
-                    @include('front.account.sidebar')
+                    @include('front.account.sidebar') 
                 </div>
                 <div class="col-lg-9">
                     <div class="card border-0 shadow mb-4">
@@ -22,7 +22,10 @@
                             <h3 class="fs-4 mb-1">My Profile</h3>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Name*</label>
-                                <input type="text" placeholder="Enter Name" class="form-control" value="">
+                                <input type="text" 
+                                    placeholder="Enter Name" 
+                                    class="form-control" 
+                                    value="{{ $user->name }}">
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Email*</label>
