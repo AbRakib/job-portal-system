@@ -13,9 +13,9 @@ class AuthMiddleware {
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response {
-        if (Auth::user()) {
-            return redirect()->route('account.profile');
+    public function handle(Request $request, Closure $next, $guard = null): Response {
+        if (!Auth::check()) {
+            return redirect()->route('account.login');
         }
         return $next($request);
     }

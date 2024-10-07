@@ -13,9 +13,9 @@ class GuestMiddleware {
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response {
-        if (Auth::check()) {
-            return redirect()->route('frontend.home');
+    public function handle(Request $request, Closure $next, $guard = null): Response {
+        if (Auth::guard($guard)->check()) {
+            return redirect()->route('account.profile');
         }
         return $next($request);
     }
