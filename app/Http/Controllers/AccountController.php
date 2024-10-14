@@ -65,9 +65,45 @@ class AccountController extends Controller {
 
     //profile section
     public function profile() {
-        $id = Auth::user()->id;
+        $id   = Auth::user()->id;
         $user = User::where('id', $id)->first();
         return view('front.account.profile', compact('user'));
+    }
+
+    //update profile
+    public function updateProfile(Request $request) {
+        $id = Auth::user()->id;
+
+        // Correct validation rules with 'required' instead of 'request'
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:5|max:20', // Corrected 'required'
+            'email' => 'required|email|unique:users,email,' . $id . ',id', // Corrected 'required'
+            'mobile' => 'nullable|digits_between:8,15', // Optional validation for mobile
+            'designation' => 'nullable|string|max:50', // Optional validation for designation
+        ]);
+
+        if ($validator->passes()) {
+            // Fetch and update user
+            $user              = User::find($id);
+            $user->name        = $request->name;
+            $user->email       = $request->email;
+            $user->mobile      = $request->mobile;
+            $user->designation = $request->designation;
+            $user->save();
+
+            // Return success response
+            session()->flash('success', 'Profile updated successfully');
+            return response()->json([
+                'status' => true,
+                'errors' => [],
+            ]);
+        } else {
+            // Return error response with validation errors
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
     }
 
     // logout
