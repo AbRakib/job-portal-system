@@ -29,8 +29,14 @@
 					<li class="nav-item">
 						<a class="nav-link" aria-current="page" href="">Find Jobs</a>
 					</li>										
-				</ul>				
-				<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Login</a>
+				</ul>
+				@if (Auth::user()->id)
+					<a class="border p-2 rounded-3 mx-2" href="{{ route('account.profile') }}">
+						{{ Auth::user()->name }}
+					</a>
+				@else
+					<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Login</a>
+				@endif			
 				<a class="btn btn-primary" href="">Post a Job</a>
 			</div>
 		</div>
