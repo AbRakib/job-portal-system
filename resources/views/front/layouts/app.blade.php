@@ -17,7 +17,7 @@
 <header>
 	<nav class="navbar navbar-expand-lg navbar-light bg-white shadow py-3">
 		<div class="container">
-			<a class="navbar-brand" href="index.html">CareerVibe</a>
+			<a class="navbar-brand" href="{{ route('frontend.home') }}">CareerVibe</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -29,8 +29,14 @@
 					<li class="nav-item">
 						<a class="nav-link" aria-current="page" href="">Find Jobs</a>
 					</li>										
-				</ul>				
-				<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Login</a>
+				</ul>
+				@if (Auth::user()->id)
+					<a class="border p-2 rounded-3 mx-2" href="{{ route('account.profile') }}">
+						{{ Auth::user()->name }}
+					</a>
+				@else
+					<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Login</a>
+				@endif			
 				<a class="btn btn-primary" href="">Post a Job</a>
 			</div>
 		</div>
@@ -70,6 +76,8 @@
 </div>
 </footer> 
 <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+<!-- SweetAlert CSS and JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.5.1.3.min.js') }}"></script>
 <script src="{{ asset('assets/js/instantpages.5.1.0.min.js') }}"></script>
 <script src="{{ asset('assets/js/lazyload.17.6.0.min.js') }}"></script>
