@@ -76,10 +76,10 @@ class AccountController extends Controller {
 
         // Correct validation rules with 'required' instead of 'request'
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:5|max:20', // Corrected 'required'
-            'email' => 'required|email|unique:users,email,' . $id . ',id', // Corrected 'required'
-            'mobile' => 'nullable|digits_between:8,15', // Optional validation for mobile
-            'designation' => 'nullable|string|max:50', // Optional validation for designation
+            'name'        => 'required|min:5|max:20',
+            'email'       => 'required|email|unique:users,email,' . $id . ',id',
+            'mobile'      => 'nullable|digits_between:8,15',
+            'designation' => 'nullable|string|max:50',
         ]);
 
         if ($validator->passes()) {
@@ -110,5 +110,41 @@ class AccountController extends Controller {
     public function logout() {
         Auth::logout();
         return redirect()->route('account.login');
+    }
+
+    // profile picture update
+    public function updateProfilePic(Request $request) {
+        $id        = Auth::user()->id;
+        $user      = User::find($id);
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($validator->passes()) {
+            // Check if the user already has a profile picture
+            if ($user->image && file_exists(public_path('/profile_pic/' . $user->image))) {
+                unlink(public_path('/profile_pic/' . $user->image));
+            }
+
+            $image     = $request->image;
+            $extension = $image->getClientOriginalExtension();
+            $imageName = $id . '-' . time() . '.' . $extension;
+            $image->move(public_path('/profile_pic'), $imageName);
+            $user->image = $imageName;
+            $user->update();
+
+            session()->flash('success', 'profile picture update successfully');
+            return response()->json([
+                'status' => true,
+                'errors' => [],
+                'image'  => $imageName,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+
     }
 }

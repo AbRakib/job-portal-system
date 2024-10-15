@@ -30,7 +30,7 @@
 						<a class="nav-link" aria-current="page" href="">Find Jobs</a>
 					</li>										
 				</ul>
-				@if (Auth::user()->id)
+				@if (Auth::user())
 					<a class="border p-2 rounded-3 mx-2" href="{{ route('account.profile') }}">
 						{{ Auth::user()->name }}
 					</a>
@@ -46,24 +46,25 @@
 @yield('content')
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateImageModal" tabindex="-1" aria-labelledby="updateImageModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title pb-0" id="exampleModalLabel">Change Profile Picture</h5>
+        <h5 class="modal-title pb-0" id="updateImageModalLabel">Change Profile Picture</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="POST" action="{{ route('account.updateProfilePic') }}" id="profilePicForm" name="profilePicForm">
+			@csrf
             <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Profile Image</label>
+                <label for="image" class="form-label">Profile Image</label>
                 <input type="file" class="form-control" id="image"  name="image">
+				<div class="text-danger" id="image-error"></div>
             </div>
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary mx-3">Update</button>
+                <button type="button" class="btn btn-primary mx-3" onclick="userProfileUpdate()">Update</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
-            
         </form>
       </div>
     </div>
@@ -90,6 +91,32 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
         }
     });
+
+	// user profile image update
+	function userProfileUpdate() {
+		var formData = new FormData(document.getElementById('profilePicForm')); // Corrected form ID
+    	var url = "{{ route('account.updateProfilePic') }}";
+		
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: formData,
+			dataType: "json",
+			contentType: false,
+			processData: false,
+			success: function(response) {
+				var errors = response.errors;
+				// Handle success
+				if (response.status === true) {
+					$("#updateImageModal").modal("hide");
+					window.location.reload();
+				} else {
+					$("#image-error").html(errors.image);
+				}
+			}
+		});
+	}
+
 </script>
 @yield('js')
 </body>
