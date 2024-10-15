@@ -17,6 +17,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [AccountController::class, 'profile'])->name('account.profile');
     Route::post('/update-profile', [AccountController::class, 'updateProfile'])->name('account.update.profile');
     Route::get('/logout', [AccountController::class, 'logout'])->name('account.logout');
+    Route::post('update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
 });
 
 Route::get('/contact', [HomeController::class, 'contact'])->name('frontend.contact');
