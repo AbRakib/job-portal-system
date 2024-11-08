@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\JobType;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -145,6 +147,39 @@ class AccountController extends Controller {
                 'errors' => $validator->errors(),
             ]);
         }
-
     }
+
+    public function createJob() {
+        $categories = Category::where('status', 1)
+            ->orderBy('name', 'ASC')
+            ->get();
+        $jobTypes = JobType::where('status', 1)
+            ->orderBy('name', 'ASC')
+            ->get();
+        return view('front.account.job.create', compact(['categories', 'jobTypes']));
+    }
+
+    public function saveJob(Request $request) {
+        try {
+            //validation rules for job
+            $validated = $request->validate([
+                'title'        => 'required|min:5|max:200',
+                'category'     => 'required',
+                'job_type'     => 'required',
+                'vacancy'      => 'required|integer',
+                'location'     => 'required|max:50',
+                'description'  => 'required',
+                'company_name' => 'required|min:3|max:75',
+            ]);
+
+            // Return response for success
+            toastr()->success('Your form has been submitted.');
+            return back();
+        } catch (\Exception $e) {
+            // Return response fail
+            toastr()->error($e->getMessage());
+            return back();
+        }
+    }
+
 }
