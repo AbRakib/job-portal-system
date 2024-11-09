@@ -10,7 +10,6 @@ class Category extends Model {
 
     protected $fillable = [
         'name',
-
         'status',
         'created_at',
         'created_by',

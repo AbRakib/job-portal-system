@@ -11,6 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('job_type_id')->constrained()->onDelete('cascade');
@@ -26,6 +27,7 @@ return new class extends Migration {
             $table->string('company_name');
             $table->string('company_location')->nullable();
             $table->string('company_website')->nullable();
+            $table->integer('isFeatured')->default(0);
 
             // default migration value
             $table->unsignedTinyInteger('status')->default(1)->comment('0=inactive,1=active');
