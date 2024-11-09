@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Job;
 use App\Models\JobType;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -160,26 +161,51 @@ class AccountController extends Controller {
     }
 
     public function saveJob(Request $request) {
-        try {
-            //validation rules for job
-            $validated = $request->validate([
-                'title'        => 'required|min:5|max:200',
-                'category'     => 'required',
-                'job_type'     => 'required',
-                'vacancy'      => 'required|integer',
-                'location'     => 'required|max:50',
-                'description'  => 'required',
-                'company_name' => 'required|min:3|max:75',
-            ]);
 
-            // Return response for success
-            toastr()->success('Your form has been submitted.');
-            return back();
+        //validation rules for job
+        $validated = $request->validate([
+            'title'        => 'required|min:5|max:200',
+            'category'     => 'required',
+            'job_type'     => 'required',
+            'vacancy'      => 'required|integer',
+            'location'     => 'required|max:50',
+            'description'  => 'required',
+            'company_name' => 'required|min:3|max:75',
+        ]);
+        try {
+            $job                   = new Job();
+            $job->user_id          = Auth::user()->id;
+            $job->title            = $request->title;
+            $job->category_id      = $request->category;
+            $job->job_type_id      = $request->job_type;
+            $job->vacancy          = $request->vacancy;
+            $job->salary           = $request->salary;
+            $job->location         = $request->location;
+            $job->description      = $request->description;
+            $job->benefits         = $request->benefits;
+            $job->responsibility   = $request->responsibility;
+            $job->qualifications   = $request->qualifications;
+            $job->keywords         = $request->keywords;
+            $job->experience       = $request->experience;
+            $job->company_name     = $request->company_name;
+            $job->company_location = $request->company_location;
+            $job->company_website  = $request->company_website;
+            $job->save();
+
+            toastr()->success('Job added successful.');
+            return redirect()->route('account.my.jobs');
         } catch (\Exception $e) {
-            // Return response fail
             toastr()->error($e->getMessage());
-            return back();
+            return redirect()->back();
         }
+    }
+
+    public function myJobs(Request $request) {
+        $jobs = Job::where('user_id', Auth::user()->id)
+            ->where('status', 1)
+            ->paginate(10);
+
+        return view('front.account.job.my_jobs', compact(['jobs']));
     }
 
 }

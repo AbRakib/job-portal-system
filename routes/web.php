@@ -20,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic');
     Route::get('/create-job', [AccountController::class, 'createJob'])->name('account.create.job');
     Route::post('/save-job', [AccountController::class, 'saveJob'])->name('account.save.job');
+    Route::get('/my-jobs', [AccountController::class, 'myJobs'])->name('account.my.jobs');
 });
 
 Route::get('/contact', [HomeController::class, 'contact'])->name('frontend.contact');
