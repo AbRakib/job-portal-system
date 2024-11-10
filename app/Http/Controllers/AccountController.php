@@ -208,4 +208,51 @@ class AccountController extends Controller {
         return view('front.account.job.my_jobs', compact(['jobs']));
     }
 
+    public function editJobs($id) {
+        $job = Job::where('id', $id)
+            ->where('status', 1)
+            ->first();
+
+        $categories = Category::where('status', 1)
+            ->orderBy('name', 'ASC')
+            ->get();
+
+        $jobTypes = JobType::where('status', 1)
+            ->orderBy('name', 'ASC')
+            ->get();
+        return view('front.account.job.edit', compact(['job', 'categories', 'jobTypes']));
+    }
+
+    public function updateJob(Request $request, $id) {
+        try {
+            $job = Job::where('id', $id)
+                ->where('status', 1)
+                ->first();
+            $job->user_id          = Auth::user()->id;
+            $job->title            = $request->title;
+            $job->category_id      = $request->category;
+            $job->job_type_id      = $request->job_type;
+            $job->vacancy          = $request->vacancy;
+            $job->salary           = $request->salary;
+            $job->location         = $request->location;
+            $job->description      = $request->description;
+            $job->benefits         = $request->benefits;
+            $job->responsibility   = $request->responsibility;
+            $job->qualifications   = $request->qualifications;
+            $job->keywords         = $request->keywords;
+            $job->experience       = $request->experience;
+            $job->company_name     = $request->company_name;
+            $job->company_location = $request->company_location;
+            $job->company_website  = $request->company_website;
+            $job->update();
+
+            toastr()->success('Job update successful.');
+            return redirect()->route('account.my.jobs');
+        } catch (\Exception $e) {
+            toastr()->error($e->getMessage());
+            return redirect()->back();
+        }
+
+    }
+
 }
