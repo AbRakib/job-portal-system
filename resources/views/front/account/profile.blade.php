@@ -1,143 +1,139 @@
 @extends('front.layouts.app')
-@section('content')
-    <section class="section-5 bg-2">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col">
-                    <nav aria-label="breadcrumb" class=" rounded-3 p-3 mb-4">
-                        <ol class="breadcrumb mb-0">
-                            <li class="breadcrumb-item"><a href="{{ route('frontend.home') }}">Home</a></li>
-                            <li class="breadcrumb-item active">Account Settings</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3">
-                    @include('front.account.sidebar') 
-                </div>
-                <div class="col-lg-9">
-                    <div class="card border-0 shadow mb-4">
-                        <form action="{{ route('account.update.profile') }}" method="POST" id="userForm">
-                            @csrf
-                            <div class="card-body p-4">
-                                <h3 class="fs-4 mb-1">My Profile</h3>
-                                
-                                <div class="mb-4">
-                                    <label for="name" class="mb-2">Name*</label>
-                                    <input type="text" 
-                                           placeholder="Enter Name" 
-                                           class="form-control" 
-                                           id="name"
-                                           name="name"
-                                           value="{{ $user->name }}">
-                                    <p></p>
-                                </div>
-                        
-                                <div class="mb-4">
-                                    <label for="email" class="mb-2">Email*</label>
-                                    <input type="email" 
-                                           placeholder="Enter Email" 
-                                           class="form-control"
-                                           id="email"
-                                           name="email"
-                                           value="{{ $user->email }}">
-                                    <p></p>
-                                </div>
-                        
-                                <div class="mb-4">
-                                    <label for="designation" class="mb-2">Designation</label>
-                                    <input type="text" 
-                                           placeholder="Designation" 
-                                           class="form-control"
-                                           id="designation"
-                                           name="designation"
-                                           value="{{ $user->designation ?? '' }}">
-                                </div>
-                        
-                                <div class="mb-4">
-                                    <label for="mobile" class="mb-2">Mobile</label>
-                                    <input type="text" 
-                                           placeholder="Mobile" 
-                                           class="form-control"
-                                           id="mobile"
-                                           name="mobile"
-                                           value="{{ $user->mobile ?? '' }}">
-                                </div>
-                            </div>
-                        
-                            <div class="card-footer p-4">
-                                <button type="button" class="btn btn-primary" onclick="updateUserSubmit()">Update</button>
-                            </div>
-                        </form>
-                        
-                    </div>
 
-                    <div class="card border-0 shadow mb-4">
-                        <div class="card-body p-4">
-                            <h3 class="fs-4 mb-1">Change Password</h3>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Old Password*</label>
-                                <input type="password" placeholder="Old Password" class="form-control">
-                            </div>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">New Password*</label>
-                                <input type="password" placeholder="New Password" class="form-control">
-                            </div>
-                            <div class="mb-4">
-                                <label for="" class="mb-2">Confirm Password*</label>
-                                <input type="password" placeholder="Confirm Password" class="form-control">
-                            </div>
-                        </div>
-                        <div class="card-footer  p-4">
-                            <button type="button" class="btn btn-primary">Update</button>
-                        </div>
-                    </div>
+@php
+    $packageCards = [
+        ['icon' => 'cog', 'label' => 'Package Name', 'value' => 'Gold', 'tone' => 'orange'],
+        ['icon' => 'dollar', 'label' => 'Price', 'value' => 'USD 50', 'tone' => 'cyan'],
+        ['icon' => 'check-square', 'label' => 'Available Quota', 'value' => $openJobsCount.' / 24', 'tone' => 'green'],
+        ['icon' => 'calendar-o', 'label' => 'Purchased On', 'value' => '08 Apr, 2025', 'tone' => 'blue'],
+        ['icon' => 'calendar-times-o', 'label' => 'Package Expires', 'value' => '05 Dec, 2026', 'tone' => 'pink'],
+    ];
+    $plans = [
+        ['name' => 'Starter', 'icon' => 'leaf', 'price' => '15', 'features' => ['10 applications / month', '2 resume scans', 'Email support', 'Basic analytics'], 'button' => 'Downgrade to Starter', 'current' => false, 'tone' => 'muted'],
+        ['name' => 'Pro', 'icon' => 'diamond', 'price' => '29', 'features' => ['40 applications / month', '10 resume scans', 'AI rewrites + recruiter boost', 'Concierge interview nudges'], 'button' => 'Current plan', 'current' => true, 'tone' => 'blue'],
+        ['name' => 'Elite', 'icon' => 'crown', 'price' => '79', 'features' => ['Unlimited applications', 'Concierge career coach', 'Spotlight placement', 'Invite-only events'], 'button' => 'Upgrade to Elite', 'current' => false, 'tone' => 'orange'],
+    ];
+@endphp
+
+@section('content')
+    <section class="employer-dashboard">
+        <div class="employer-hero-bar">
+            <div class="container employer-hero-inner">
+                <div>
+                    <h1>Welcome to Employer Dashboard</h1>
+                    <p>Track job postings, packages, and CV views in one place.</p>
                 </div>
+                <a class="btn btn-primary" href="{{ route('account.create.job') }}"><i class="fa fa-plus"></i> Post a Job</a>
             </div>
         </div>
+
+        <div class="container employer-shell">
+            <aside class="seeker-sidebar">
+                @include('front.account.sidebar')
+            </aside>
+
+            <main class="employer-main">
+                <div class="seeker-stats employer-stats">
+                    <div class="stat-card purple"><i class="fa fa-clock-o"></i><span>Open Jobs</span><strong>{{ $openJobsCount }}</strong></div>
+                    <div class="stat-card orange"><i class="fa fa-users"></i><span>Followers</span><strong>2</strong></div>
+                    <div class="stat-card blue"><i class="fa fa-envelope-o"></i><span>Messages</span><strong>0</strong></div>
+                </div>
+
+                <section class="dashboard-panel employer-panel">
+                    <div class="panel-heading-with-icon">
+                        <span><i class="fa fa-cube"></i></span>
+                        <h2>Purchased Job Package Details</h2>
+                    </div>
+                    <div class="package-detail-grid">
+                        @foreach ($packageCards as $card)
+                            <article class="package-detail-card">
+                                <span class="package-icon {{ $card['tone'] }}"><i class="fa fa-{{ $card['icon'] }}"></i></span>
+                                <small>{{ $card['label'] }}</small>
+                                <strong>{{ $card['value'] }}</strong>
+                            </article>
+                        @endforeach
+                    </div>
+                </section>
+
+                <section class="dashboard-panel employer-panel">
+                    <div class="panel-title">
+                        <h2>Upgrade Job Packages</h2>
+                        <a href="#">Compare all</a>
+                    </div>
+                    <div class="plan-grid">
+                        @foreach ($plans as $plan)
+                            <article class="plan-card {{ $plan['current'] ? 'current' : '' }}">
+                                <span class="plan-icon {{ $plan['tone'] }}"><i class="fa fa-{{ $plan['icon'] }}"></i></span>
+                                <h3>{{ $plan['name'] }}{{ $plan['current'] ? ' (Current)' : '' }}</h3>
+                                <p><strong>$ {{ $plan['price'] }}</strong> /month</p>
+                                <ul>
+                                    @foreach ($plan['features'] as $feature)
+                                        <li><i class="fa fa-check"></i>{{ $feature }}</li>
+                                    @endforeach
+                                </ul>
+                                <a class="plan-action {{ $plan['current'] ? 'disabled' : '' }}" href="#">{{ $plan['button'] }}</a>
+                            </article>
+                        @endforeach
+                    </div>
+                </section>
+
+                <section class="dashboard-panel employer-panel">
+                    <div class="panel-title">
+                        <h2>Recent Posted Jobs</h2>
+                        <a href="{{ route('account.my.jobs') }}">Manage jobs</a>
+                    </div>
+                    <div class="recent-job-list">
+                        @forelse ($recentJobs as $job)
+                            <article>
+                                <div>
+                                    <h3>{{ $job->title }}</h3>
+                                    <p>{{ optional($job->category)->name ?: 'General' }} &middot; {{ optional($job->jobType)->name ?: 'Job' }} &middot; {{ $job->location }}</p>
+                                </div>
+                                <span>{{ $job->status == 1 ? 'Active' : 'Paused' }}</span>
+                            </article>
+                        @empty
+                            <div class="empty-employer-state">
+                                <h3>No jobs posted yet</h3>
+                                <p>Create your first listing and start receiving applicants.</p>
+                                <a class="btn btn-primary" href="{{ route('account.create.job') }}">Post a Job</a>
+                            </div>
+                        @endforelse
+                    </div>
+                </section>
+
+                <section class="dashboard-panel employer-panel compact-panel">
+                    <div class="panel-title">
+                        <h2>Purchased CVs Package Details</h2>
+                        <a href="#">View invoices</a>
+                    </div>
+                    <div class="cv-package-grid">
+                        <div><span>Package Name</span><strong>Startup</strong></div>
+                        <div><span>Price</span><strong>USD 30</strong></div>
+                        <div><span>Available CVs</span><strong>3 / 30</strong></div>
+                        <div><span>Purchased On</span><strong>06 Nov, 2025</strong></div>
+                        <div class="danger"><span>Expires On</span><strong>06 Dec, 2025</strong></div>
+                    </div>
+                </section>
+
+                <section class="dashboard-panel employer-panel">
+                    <h2>Upgrade CV Search Package</h2>
+                    <div class="plan-grid mt-3">
+                        @foreach ($plans as $plan)
+                            <article class="plan-card {{ $plan['current'] ? 'current' : '' }}">
+                                <span class="plan-icon {{ $plan['tone'] }}"><i class="fa fa-{{ $plan['icon'] }}"></i></span>
+                                <h3>{{ $plan['name'] }}{{ $plan['current'] ? ' (Current)' : '' }}</h3>
+                                <p><strong>$ {{ $plan['price'] }}</strong> /month</p>
+                                <ul>
+                                    @foreach ($plan['features'] as $feature)
+                                        <li><i class="fa fa-check"></i>{{ $feature }}</li>
+                                    @endforeach
+                                </ul>
+                                <a class="plan-action {{ $plan['current'] ? 'disabled' : '' }}" href="#">{{ $plan['button'] }}</a>
+                            </article>
+                        @endforeach
+                    </div>
+                </section>
+            </main>
+        </div>
     </section>
-@endsection
-
-@section('js')
-    <script>
-       function updateUserSubmit() {
-            var data = $("#userForm").serialize();
-            $.ajax({
-                url: "{{ route('account.update.profile') }}",
-                type: "POST",  // Change to POST
-                data: data,
-                success: function(response) {
-                    // Handle success
-                    if (response.status == true) {
-                        Swal.fire({
-                            title: 'Profile Updated!',
-                            text: 'Your profile was updated successfully!',
-                            icon: null,
-                            width: '300px',
-                            customClass: {
-                                popup: 'small-swal',
-                            },
-                            confirmButtonText: 'OK',
-                        });
-
-                    } else {
-                        var errors = response.errors;
-                        if(errors.name) {
-                            $('#name').addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.name);
-                        } else {
-                            $('#name').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html("");
-                        }
-
-                        if(errors.email) {
-                            $('#email').addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.email);
-                        } else {
-                            $('#email').removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html("");
-                        }
-                    }
-                }
-            });
-        }
-
-    </script>
 @endsection

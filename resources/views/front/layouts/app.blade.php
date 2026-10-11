@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/portal.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
 	<!-- Fav Icon -->
 	<link rel="shortcut icon" type="image/x-icon" href="#" />
 </head>
@@ -28,7 +29,7 @@
 						<a class="nav-link" aria-current="page" href="{{ route('frontend.home') }}">Home</a>
 					</li>	
 					<li class="nav-item">
-						<a class="nav-link" href="{{ route('frontend.home') }}#latest-jobs">Jobs</a>
+						<a class="nav-link" href="{{ route('frontend.jobs') }}">Jobs</a>
 					</li>										
                     <li class="nav-item"><a class="nav-link" href="{{ route('frontend.home') }}#companies">Employers</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('frontend.home') }}#categories">Categories</a></li>

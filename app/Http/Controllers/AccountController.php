@@ -70,7 +70,15 @@ class AccountController extends Controller {
     public function profile() {
         $id   = Auth::user()->id;
         $user = User::where('id', $id)->first();
-        return view('front.account.profile', compact('user'));
+        $postedJobsCount = Job::where('user_id', $id)->count();
+        $openJobsCount   = Job::where('user_id', $id)->where('status', 1)->count();
+        $recentJobs      = Job::with(['category', 'jobType'])
+            ->where('user_id', $id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('front.account.profile', compact('user', 'postedJobsCount', 'openJobsCount', 'recentJobs'));
     }
 
     //update profile

@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
+Route::get('/jobs', [JobController::class, 'index'])->name('frontend.jobs');
+Route::get('/jobs/{job}', [JobController::class, 'show'])->name('frontend.jobs.show');
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/login', [AccountController::class, 'login'])->name('account.login');

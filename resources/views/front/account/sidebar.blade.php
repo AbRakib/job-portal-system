@@ -1,41 +1,31 @@
-<div class="card border-0 shadow mb-4 p-3">
-    <div class="s-body text-center mt-3">
-        @if (Auth::user()->image)
-            <img src="{{ asset('profile_pic/'.Auth::user()->image) }}" alt="avatar" class="rounded-circle img-fluid"
-        style="width: 150px;">
-        @else
-            <img src="{{ asset('assets/images/avatar7.png') }}" alt="avatar" class="rounded-circle img-fluid"
-            style="width: 150px;">
-        @endif
-        <h5 class="mt-3 pb-0">{{ Auth::user()->name }}</h5>
-        <p class="text-muted mb-1 fs-6">Full Stack Developer</p>
-        <div class="d-flex justify-content-center mb-2">
-            <button data-bs-toggle="modal" data-bs-target="#updateImageModal" type="button" class="btn btn-primary">Change
-                Profile Picture</button>
+@php
+    $sidebarUser = Auth::user();
+@endphp
+
+<div class="dashboard-menu">
+    <div class="open-work-card">
+        <div>
+            <strong>Premium Employer</strong>
+            <span>Job posting enabled</span>
         </div>
+        <button type="button" aria-label="Employer posting is enabled"></button>
     </div>
-</div>
-<div class="card account-nav border-0 shadow mb-4 mb-lg-0">
-    <div class="card-body p-0">
-        <ul class="list-group list-group-flush ">
-            <li class="list-group-item d-flex justify-content-between p-3">
-                <a href="{{ route('account.profile') }}">Account Settings</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="{{ route('account.create.job') }}">Post a Job</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="{{ route('account.my.jobs') }}">My Jobs</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="job-applied.html">Jobs Applied</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="saved-jobs.html">Saved Jobs</a>
-            </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                <a href="{{ route('account.logout') }}">Logout</a>
-            </li>
-        </ul>
+
+    <div class="menu-identity">
+        <h2>{{ $sidebarUser->name ?: 'Employer' }}</h2>
+        <p>{{ $sidebarUser->email }}</p>
     </div>
+
+    <nav class="dashboard-nav" aria-label="Account navigation">
+        <a class="active" href="{{ route('account.profile') }}"><i class="fa fa-tachometer"></i> Dashboard</a>
+        <a href="{{ route('account.profile') }}"><i class="fa fa-user"></i> Edit Account Details</a>
+        <a href="#"><i class="fa fa-building"></i> Company Public Profile</a>
+        <a href="{{ route('account.create.job') }}"><i class="fa fa-plus"></i> Post a Job</a>
+        <a href="{{ route('account.my.jobs') }}"><i class="fa fa-briefcase"></i> Manage Jobs</a>
+        <a href="#"><i class="fa fa-database"></i> CV Search Packages</a>
+        <a href="#"><i class="fa fa-credit-card"></i> Payment History</a>
+        <a href="#"><i class="fa fa-envelope"></i> Company Messages</a>
+        <a href="#"><i class="fa fa-users"></i> Company Followers</a>
+        <a href="{{ route('account.logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+    </nav>
 </div>
