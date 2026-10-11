@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en_AU" />
+<html class="no-js" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>CareerVibe | Find Best Jobs</title>
+	<title>JobsPortal | Find Your Next Opportunity</title>
 	<meta name="description" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<meta name="HandheldFriendly" content="True" />
 	<meta name="pinterest" content="nopin" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/portal.css') }}" />
 	<!-- Fav Icon -->
 	<link rel="shortcut icon" type="image/x-icon" href="#" />
 </head>
 <body data-instant-intensity="mousedown">
-<header>
-	<nav class="navbar navbar-expand-lg navbar-light bg-white shadow py-3">
+<header class="site-header">
+	<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
 		<div class="container">
-			<a class="navbar-brand" href="{{ route('frontend.home') }}">CareerVibe</a>
+			<a class="navbar-brand" href="{{ route('frontend.home') }}"><i class="fa fa-briefcase"></i> <span>Jobs</span>Portal</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -27,15 +28,19 @@
 						<a class="nav-link" aria-current="page" href="{{ route('frontend.home') }}">Home</a>
 					</li>	
 					<li class="nav-item">
-						<a class="nav-link" aria-current="page" href="">Find Jobs</a>
+						<a class="nav-link" href="{{ route('frontend.home') }}#latest-jobs">Jobs</a>
 					</li>										
+                    <li class="nav-item"><a class="nav-link" href="{{ route('frontend.home') }}#companies">Employers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('frontend.home') }}#categories">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('frontend.home') }}#career-advice">Career Advice</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('frontend.contact') }}">Contact Us</a></li>
 				</ul>
 				@if (Auth::user())
-					<a class="border p-2 rounded-3 mx-2" href="{{ route('account.profile') }}">
+					<a class="account-chip mx-2" href="{{ route('account.profile') }}">
 						{{ Auth::user()->name }}
 					</a>
 				@else
-					<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Login</a>
+					<a class="btn btn-outline-primary me-2" href="{{ route('account.login') }}">Sign In</a>
 				@endif			
 				<a class="btn btn-primary" href="{{ route('account.create.job') }}">Post a Job</a>
 			</div>
@@ -71,11 +76,12 @@
   </div>
 </div>
 
-<footer class="bg-dark py-3 bg-2">
-<div class="container">
-    <p class="text-center text-white pt-3 fw-bold fs-6">© 2023 xyz company, all right reserved</p>
-</div>
-</footer> 
+<footer class="portal-footer"><div class="container footer-grid">
+    <div><a class="footer-brand" href="{{ route('frontend.home') }}">JobsPortal</a><p>Your next chapter starts here.</p><a href="{{ route('account.registration') }}">Create an account</a></div>
+    <div><h3>Quick Links</h3><a href="{{ route('frontend.home') }}#latest-jobs">Find Jobs</a><a href="{{ route('account.create.job') }}">Post a Job</a><a href="{{ route('frontend.home') }}#how-it-works">How It Works</a><a href="{{ route('frontend.contact') }}">Contact Us</a></div>
+    <div><h3>Jobs By Functional Area</h3><a href="{{ route('frontend.home') }}#categories">Marketing</a><a href="{{ route('frontend.home') }}#categories">Software Development</a><a href="{{ route('frontend.home') }}#categories">Design & Creative</a><a href="{{ route('frontend.home') }}#categories">Engineering</a></div>
+    <div><h3>Connect With Us</h3><p>Find opportunities. Meet great teams.<br>Build a career you love.</p><a href="{{ route('frontend.contact') }}"><i class="fa fa-envelope-o"></i> Get in touch</a></div>
+</div></footer><div class="footer-bottom"><div class="container"><span>&copy; {{ date('Y') }} JobsPortal. All rights reserved.</span><span>Made for your next move.</span></div></div>
 <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <!-- SweetAlert CSS and JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
