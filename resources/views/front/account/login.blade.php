@@ -1,43 +1,40 @@
 @extends('front.layouts.app')
 @section('content')
-<section class="section-5">
-    <div class="container my-5">
-        <div class="py-lg-2">&nbsp;</div>
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-5">
+<section class="section-5 auth-section registration-section">
+    <div class="container">
+        <div class="auth-compact">
+            <div class="auth-panel">
                 @session('success')
                     <p class="alert alert-success fw-bold text-center">{{ Session()->get('success') }}</p>
                 @endsession
-                <div class="card shadow border-0 p-5">
-                    <h1 class="h3">Login</h1>
+                <div class="auth-card">
+                    <div class="auth-heading">
+                        <h2>Login</h2>
+                    </div>
                     <form action="{{ route('account.check.login') }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <label for="" class="mb-2">Email*</label>
+                            <label for="email" class="form-label">Email*</label>
                             <input type="email" value="{{ old('email') }}" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="example@example.com">
                             @error('email')
                                 <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
                         </div> 
                         <div class="mb-3">
-                            <label for="" class="mb-2">Password*</label>
-                            <input type="password" name="password" id="password" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Password">
+                            <label for="password" class="form-label">Password*</label>
+                            <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter Password">
                             @error('password')
                                 <p class="invalid-feedback">{{ $message }}</p>
                             @enderror
                         </div> 
-                        <div class="justify-content-between d-flex">
-                        <button class="btn btn-primary mt-2">Login</button>
-                            <a href="" class="mt-3">Forgot Password?</a>
-                        </div>
+                        <button class="btn btn-primary auth-submit" type="submit">Login</button>
                     </form>                    
                 </div>
-                <div class="mt-4 text-center">
+                <div class="auth-switch">
                     <p>Do not have an account? <a  href="{{ route('account.registration') }}">Register</a></p>
                 </div>
             </div>
         </div>
-        <div class="py-lg-5">&nbsp;</div>
     </div>
 </section>
 @endsection
